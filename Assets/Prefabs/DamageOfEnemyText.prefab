@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5170141511955168083}
   - component: {fileID: 386058860330474099}
   - component: {fileID: 398100001205079327}
-  - component: {fileID: -497088912027269}
   m_Layer: 5
   m_Name: DamageOfEnemyText
   m_TagString: Untagged
@@ -53,8 +52,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageText
   _lifeTime: 0.5
   _upAmount: 50
-  _TargetWorldPos: {x: 0, y: 0, z: 0}
-  _DamageAmount: 0
 --- !u!222 &386058860330474099
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -155,22 +152,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &-497088912027269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560134722082599229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
-  SortKey: 2120072972
-  ObjectInterest: 1
-  Flags: 131073
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 5170141511955168083}
-  ForceRemoteRenderTimeframe: 0

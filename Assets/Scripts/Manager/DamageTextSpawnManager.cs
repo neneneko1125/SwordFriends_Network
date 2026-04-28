@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DamageTextSpawnManager : NetworkBehaviour
 {
-    [SerializeField] private NetworkObject _damageOfPlayerTextPrefab;
-    [SerializeField] private NetworkObject _damageOfEnemyTextPrefab;
+    [SerializeField] private GameObject _damageOfPlayerTextPrefab;
+    [SerializeField] private GameObject _damageOfEnemyTextPrefab;
 
     public Canvas MainCanvas;
 
@@ -34,31 +34,28 @@ public class DamageTextSpawnManager : NetworkBehaviour
         SpawnText(_damageOfEnemyTextPrefab, targetTransform, damage);
     }
 
-    private void SpawnText(NetworkObject prefab, Transform targetTransform, int damage)
+    private void SpawnText(GameObject prefab, Transform targetTransform, int damage)
     {
         if (prefab == null || Runner == null)
         {
             return;
         }
 
-        // 第5引数のラムダ式で、ネットワーク同期が始まる前に値をセットする
-        Runner.Spawn(prefab, Vector3.zero, Quaternion.identity, Runner.LocalPlayer, (runner, obj) =>
+        GameObject damageText = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+
+        // 座標のセット
+        DamageText damageScript = damageText.GetComponent<DamageText>();
+        if (damageScript != null)
         {
-            // //DamageTextクラスでもテキスト変更処理をしているが、安定させるためにこっちでもやる
-            TextMeshProUGUI text = obj.GetComponentInChildren<TextMeshProUGUI>();
-            if (text != null)
-            {
-                text.text = damage.ToString();
-            }
+            damageScript.TargetWorldPos = targetTransform.position;
+            damageScript.DamageAmount = damage;
+        }
 
-            // 座標のセット
-            DamageText damageScript = obj.GetComponent<DamageText>();
-            if (damageScript != null)
-            {
-                damageScript.TargetWorldPos = targetTransform.position;
-                damageScript.DamageAmount = damage;
-            }
-        });
+        // //DamageTextクラスでもテキスト変更処理をしているが、安定させるためにこっちでもやる
+        TextMeshProUGUI text = damageText.GetComponentInChildren<TextMeshProUGUI>();
+        if (text != null)
+        {
+            text.text = damage.ToString();
+        }
     }
-
 }
