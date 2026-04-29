@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 5077861211789540210}
   - component: {fileID: -7750627726590970273}
   - component: {fileID: 7463779445625935006}
+  - component: {fileID: 2713102211689225723}
   - component: {fileID: 8611194221802397921}
   - component: {fileID: 3832820301584296166}
   - component: {fileID: 4484465445791512334}
@@ -347,6 +348,19 @@ MonoBehaviour:
   _IsFacingRightNet: 1
   _IsLadderMode: 1
   _parentTransform: {fileID: 4338923602519308038}
+--- !u!114 &2713102211689225723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593176349790120795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4948ba13600a64c47bc7689b833e68c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  _IsReady: 0
 --- !u!114 &8611194221802397921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +400,7 @@ MonoBehaviour:
   - {fileID: 2430063790469313525}
   - {fileID: -7750627726590970273}
   - {fileID: 7463779445625935006}
+  - {fileID: 2713102211689225723}
   - {fileID: 8611194221802397921}
   - {fileID: 6628221990522706019}
   ForceRemoteRenderTimeframe: 0
