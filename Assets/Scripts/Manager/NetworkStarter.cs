@@ -77,6 +77,13 @@ public class NetworkStarter : MonoBehaviour
         if (status.total > 0 && status.ready == status.total)
         {
             _isSceneLoading = true;
+
+            // ロビーブラウザや「空いている部屋」の検索に表示されなくなる
+            _runner.SessionInfo.IsVisible = false;
+
+            // セッション名を知っている人が直接入ろうとしても拒絶する
+            _runner.SessionInfo.IsOpen = false;
+
             _runner.LoadScene("MainScene");
         }
     }

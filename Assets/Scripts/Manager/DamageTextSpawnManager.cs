@@ -2,7 +2,7 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 
-public class DamageTextSpawnManager : NetworkBehaviour
+public class DamageTextSpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _damageOfPlayerTextPrefab;
     [SerializeField] private GameObject _damageOfEnemyTextPrefab;
@@ -36,7 +36,7 @@ public class DamageTextSpawnManager : NetworkBehaviour
 
     private void SpawnText(GameObject prefab, Transform targetTransform, int damage)
     {
-        if (prefab == null || Runner == null)
+        if (prefab == null)
         {
             return;
         }
