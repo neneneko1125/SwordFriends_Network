@@ -1,7 +1,5 @@
 using UnityEngine.UI;
 using UnityEngine;
-using Fusion;
-
 
 public class EnemyHP : BaseHP
 {

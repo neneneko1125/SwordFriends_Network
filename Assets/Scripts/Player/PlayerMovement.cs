@@ -4,10 +4,10 @@ using Fusion;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    //横方向の移動速度
+    // 横方向の移動速度
     [SerializeField] private float _moveSpeed = 5f;
 
-    //ジャンプ関連
+    // ジャンプ関連
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private Transform _groundChecker;
     [SerializeField] private float _groundCheckRadius = 0.1f;
@@ -25,7 +25,7 @@ public class PlayerMovement : NetworkBehaviour
     [Networked] public bool IsGrounded { get; set; }
     [Networked] public bool IsWalking { get; set; }
 
-    //右(正の方向)を向いていればtrue
+    // 右(正の方向)を向いていればtrue
     [Networked] public bool IsFacingRightNet { get; set; } = true;
     [Networked] public bool IsLadderMode { get; set; } = false;
 
@@ -35,16 +35,15 @@ public class PlayerMovement : NetworkBehaviour
     private float _defaultGravityScale;
 
     private Rigidbody2D _rb;
-    private PlayerAttack _playerAttack;
+    private PlayerAttackHandler _playerAttack;
 
     public override void Spawned()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _playerAttack = GetComponent<PlayerAttack>();
-        _playerDefaultScale = _parentTransform.localScale;  //デフォルトのScaleを保存
-        _defaultGravityScale = _rb.gravityScale;
+        _playerAttack = GetComponent<PlayerAttackHandler>();
+        _playerDefaultScale = _parentTransform.localScale;  // デフォルトのScaleを保存
+        _defaultGravityScale = _rb.gravityScale;    // デフォルトの重力を保存
     }
-
 
     public override void FixedUpdateNetwork()
     {
@@ -54,7 +53,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
-        IsGrounded = Physics2D.OverlapCircle(_groundChecker.position, _groundCheckRadius, _groundLayer);
+        IsGrounded = Physics2D.OverlapCircle(_groundChecker.position, _groundCheckRadius, _groundLayer);    // 地面チェック
         CheckLadder();
 
         // PlayerInputのMyInputDataを取得
@@ -72,13 +71,9 @@ public class PlayerMovement : NetworkBehaviour
             }
             if (inputData.LadderReleased)
             {
-                Debug.Log("上るボタンを離した");
-                CancelLadder();
+                CancelLadder();     // はしごを上ってるとき、はしごボタンを離すとはしごモードOFF
             }
         }
-
-        //_rb.gravityScale = _defaultGravityScale;
-        //IsLadderMode = false;
     }
 
     public override void Render()
@@ -98,7 +93,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Walk(float direction)
     {
-        //ダッシュ時のスピードと競合しないように
+        // ダッシュ時のスピードと競合しないように
         if (_playerAttack.IsDashAttacking)
         {
             return;
@@ -106,9 +101,10 @@ public class PlayerMovement : NetworkBehaviour
 
         _rb.linearVelocityX = direction * _moveSpeed;
 
-        // 2. 固定更新の中で状態を確定させる
+        // 固定更新の中で状態を確定させる
         IsWalking = Mathf.Abs(direction) > 0.1f;
 
+        // 進んでいる方向によってプレイヤーの向きを決定
         if (direction > 0.1f)
         {
             IsFacingRightNet = true;
@@ -129,7 +125,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void CheckLadder()
     {
-        Collider2D hit = Physics2D.OverlapBox(transform.position, _hitBoxSize, 0, _ladderLayer);
+        Collider2D hit = Physics2D.OverlapBox(transform.position, _hitBoxSize, 0, _ladderLayer);    // はしごチェック
 
         if (hit != null)
         {
@@ -137,7 +133,7 @@ public class PlayerMovement : NetworkBehaviour
         }
         else
         {
-            CancelLadder();
+            CancelLadder();     // はしごから離れたらはしごモードOFF
         }
     }
 
@@ -147,19 +143,15 @@ public class PlayerMovement : NetworkBehaviour
         _rb.linearVelocityY = _ladderSpeed;
     }
 
-    /// <summary>
-    /// はしごから離れたとき、またははしごを上っているときにボタンを離すとキャンセル
-    /// </summary>
     private void CancelLadder()
     {
         IsLadderMode = false;
         _rb.gravityScale = _defaultGravityScale;
     }
 
-
     private void ChangeWalkAnimation()
     {
-        // どちらのAnimatorがアクティブ状態かをみる
+        // どのAnimatorがアクティブ状態かをみる
         if (_animator1 != null && _animator1.gameObject.activeInHierarchy)
         {
             _animator1.SetBool("Walk", IsWalking);
@@ -178,6 +170,7 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    
 
     private void OnDrawGizmos()
     {

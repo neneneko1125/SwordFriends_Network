@@ -38,7 +38,7 @@ public class EnemyMovement : NetworkBehaviour
     private Rigidbody2D _rb;
     private Vector2 _defaultScale;
     public Transform _currentTarget;
-    private EnemyAttack _enemyAttack;
+    private EnemyAttackHandler _enemyAttack;
 
 
     // é¿ç€Ç…égópÇ∑ÇÈìØä˙Ç≥ÇÍÇΩë¨ìx
@@ -54,7 +54,7 @@ public class EnemyMovement : NetworkBehaviour
     public override void Spawned()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _enemyAttack = GetComponent<EnemyAttack>();
+        _enemyAttack = GetComponent<EnemyAttackHandler>();
         _defaultScale = transform.localScale;
 
         if (HasStateAuthority)

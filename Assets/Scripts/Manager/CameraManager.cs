@@ -8,7 +8,7 @@ public class CameraManager : MonoBehaviour
     //滑らかに動く時間　短いほど俊敏に動く
     [SerializeField] private float _smoothTime = 0.2f;
 
-    //smoothDampのvarで使うときはfloatfloatじゃなくてVector3
+    //smoothDampのvarで使うときはfloatじゃなくてVector3
     private Vector3 _velocity = Vector3.zero;
 
     //カメラの移動範囲　最小値と最大値

@@ -6,21 +6,49 @@ public class BaseHP : NetworkBehaviour
 {
     [SerializeField] protected int _maxHP = 5;
     [SerializeField] protected float _invincibleTime = 1.0f;
-    [SerializeField] protected float _blinkingSpeed = 10.0f;
+    [SerializeField] protected float _blinkingSpeed = 1.0f;
 
     [SerializeField] protected Image _hpBar;
 
     [Networked] protected int CurrentHP { get; set; }
     [Networked] protected bool IsInvincible { get; set; }
-    [Networked] protected TickTimer InvincibilityTimer { get; set; } // 無敵時間の管理用
+    [Networked] protected TickTimer InvincibilityTimer { get; set; }
 
     public override void Spawned()
     {
-        if (HasStateAuthority)
+        if (!HasStateAuthority)
         {
-            CurrentHP = _maxHP;
+            return;
+        }
+
+        CurrentHP = _maxHP;
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (IsInvincible && InvincibilityTimer.Expired(Runner))
+        {
+            IsInvincible = false;
         }
     }
+
+    public override void Render()
+    {
+        if (IsInvincible)
+        {
+            // 時間を点滅速度で割った余りが 0.5 未満かどうかで 0 か 1 を決める
+            float alpha = (Time.time * _blinkingSpeed % 1.0f) < 0.5f ? 0f : 1f;
+            SetAlpha(alpha);
+        }
+        else
+        {
+            //白色(元々の色)に戻す
+            SetAlpha(1.0f);
+        }
+
+        UpdateUI();
+    }
+
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]    //誰でもRPCを呼べる　そのオブジェクトの管理権限を持っている人の画面だけで実行
     public void Rpc_TakeDamage(int damage)
@@ -35,11 +63,13 @@ public class BaseHP : NetworkBehaviour
 
         if (CurrentHP <= 0)
         {
+            //死亡処理
             CurrentHP = 0;
             Runner.Despawn(Object);
         }
         else
         {
+            //無敵処理
             IsInvincible = true;
             InvincibilityTimer = TickTimer.CreateFromSeconds(Runner, _invincibleTime);
         }
@@ -52,32 +82,6 @@ public class BaseHP : NetworkBehaviour
         PlayEffect();       // エフェクトを出す
         SpawnDamageText(damage); // ダメージテキスト
     }
-
-    public override void FixedUpdateNetwork()
-    {
-        // 無敵タイマーが終了したらフラグを下ろす
-        if (IsInvincible && InvincibilityTimer.Expired(Runner))
-        {
-            IsInvincible = false;
-        }
-    }
-
-    public override void Render()
-    {
-        if (IsInvincible)
-        {
-            // 時間を点滅速度で割った余りが 0.5 未満かどうかで 0 か 1 を決める
-            // これで「パッパッ」とはっきり切り替わります
-            float alpha = (Time.time * _blinkingSpeed % 1.0f) < 0.5f ? 0f : 1f;
-            SetAlpha(alpha);
-        }
-        else
-        {
-            SetAlpha(1.0f);
-        }
-        UpdateUI();
-    }
-
 
     protected virtual void SetAlpha(float alpha)
     {

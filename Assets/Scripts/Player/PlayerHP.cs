@@ -10,7 +10,6 @@ public class PlayerHP : BaseHP
         _playerMovement = GetComponent<PlayerMovement>();
     }
 
-
     protected override void UpdateBarDirection()
     {
         if (_playerMovement == null)

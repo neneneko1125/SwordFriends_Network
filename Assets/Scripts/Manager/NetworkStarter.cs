@@ -6,7 +6,8 @@ public class NetworkStarter : MonoBehaviour
 {
     [SerializeField] private GameObject _connectButton;
     [SerializeField] private GameObject _preparationCompletebutton;
-    [SerializeField] private PlayerData _playerDataPrefab;
+    [SerializeField] private GameObject _preparationCancelbutton;
+    [SerializeField] private PlayerReadyStatus _playerDataPrefab;
 
     private bool _isSceneLoading = false;
 
@@ -14,11 +15,44 @@ public class NetworkStarter : MonoBehaviour
 
     [Networked] public bool IsPreparationCompleted { get; private set; } = false;
 
+    private void Start()
+    {
+        _connectButton.SetActive(true);
+        _preparationCompletebutton.SetActive(false);
+        _preparationCancelbutton.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (_runner == null || !_runner.IsSceneAuthority || _isSceneLoading)
+        {
+            return;
+        }
+
+        // 結果(ready, total)を取得
+        var status = GetReadyStatus();
+
+        // 準備が整ったか判定
+        if (status.total > 0 && status.ready == status.total)
+        {
+            _isSceneLoading = true;
+
+            // ロビーブラウザや「空いている部屋」の検索に表示されなくなる
+            _runner.SessionInfo.IsVisible = false;
+
+            // セッション名を知っている人が直接入ろうとしても拒絶する
+            _runner.SessionInfo.IsOpen = false;
+
+            _runner.LoadScene("MainScene");
+        }
+    }
+
+
     public async void OnClickJoinGame()
     {
         if (_runner == null)
         {
-            _runner = gameObject.AddComponent<NetworkRunner>(); 
+            _runner = gameObject.AddComponent<NetworkRunner>();
         }
 
         // このパソコンからの入力を読み取れるように
@@ -53,41 +87,7 @@ public class NetworkStarter : MonoBehaviour
             Debug.Log("接続失敗: " + result.ShutdownReason);
         }
     }
-
-    public void OnClickPreparationComplete()
-    {
-        if(PlayerData.Local != null)
-        {
-            PlayerData.Local.Rpc_SetReady(true);
-            _preparationCompletebutton.SetActive(false);
-        }
-    }
-
-    private void Update()
-    {
-        if (_runner == null || !_runner.IsSceneAuthority || _isSceneLoading)
-        {
-            return;
-        }
-
-        // 結果(ready, total)を取得
-        var status = GetReadyStatus();
-
-        // 準備が整ったか判定
-        if (status.total > 0 && status.ready == status.total)
-        {
-            _isSceneLoading = true;
-
-            // ロビーブラウザや「空いている部屋」の検索に表示されなくなる
-            _runner.SessionInfo.IsVisible = false;
-
-            // セッション名を知っている人が直接入ろうとしても拒絶する
-            _runner.SessionInfo.IsOpen = false;
-
-            _runner.LoadScene("MainScene");
-        }
-    }
-
+  
     // タプルを使って、準備数と総人数を同時に受け取る
     private (int ready, int total) GetReadyStatus()
     {
@@ -96,13 +96,37 @@ public class NetworkStarter : MonoBehaviour
 
         foreach (var obj in _runner.GetAllNetworkObjects())
         {
-            if (obj.TryGetComponent<PlayerData>(out var data))
+            if (obj.TryGetComponent<PlayerReadyStatus>(out var data))
             {
                 total++;
-                if (data.IsReady) ready++;
+                if (data.IsReady)
+                {
+                    ready++;
+                }
             }
         }
         return (ready, total);
     }
 
+    public void OnClickPreparationComplete()
+    {
+        if (PlayerReadyStatus.Local != null)
+        {
+            PlayerReadyStatus.Local.Rpc_SetReady(true);
+
+            _preparationCompletebutton.SetActive(false);
+            _preparationCancelbutton.SetActive(true);
+        }
+    }
+
+    public void OnClickPreparationCancel()
+    {
+        if (PlayerReadyStatus.Local != null)
+        {
+            PlayerReadyStatus.Local.Rpc_SetReady(false);
+
+            _preparationCompletebutton.SetActive(true);
+            _preparationCancelbutton.SetActive(false);
+        }
+    }
 }

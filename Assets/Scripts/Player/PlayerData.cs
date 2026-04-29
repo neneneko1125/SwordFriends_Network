@@ -1,25 +1,24 @@
 using UnityEngine;
-using Fusion;
 
-public class PlayerData : NetworkBehaviour
+[CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData")]
+public class PlayerData : ScriptableObject
 {
-    [Networked] public bool IsReady { get; private set; } = false;
+    [Header("æœ€å¤§HP")]
+    [SerializeField] private int _maxHP;
 
-    //static‚Íˆá‚¤ƒpƒ\ƒRƒ“‚Æ‚Í‹¤—L‚µ‚È‚¢@
-    //A‚³‚ñ‚Ìƒpƒ\ƒRƒ“‚©‚çŒ©‚½Local‚ÍA,B‚³‚ñ‚Ìƒpƒ\ƒRƒ“‚©‚çŒ©‚½Local‚ÍB...
-    public static PlayerData Local { get; private set; }
+    [Header("ç§»å‹•é€Ÿåº¦")]
+    [SerializeField] private int _moveSpeed;
 
-    public override void Spawned()
-    {
-        if (Object.HasInputAuthority)
-        {
-            Local = this;
-        }
-    }
+    [Header("åŸºç¤Žæ”»æ’ƒåŠ›")]
+    [SerializeField] private int _baseAttackPower;
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void Rpc_SetReady(bool ready)
-    {
-        IsReady = ready;
-    }
+    [Header("ä¼šå¿ƒçŽ‡")]
+    [SerializeField] private float _criticalProbability;
+
+    //ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(å¤–éƒ¨ã‹ã‚‰èª­ã¿å–ã‚‹ç”¨)
+    public int MaxHP => _maxHP;
+    public int MoveSpeed => _moveSpeed;
+    public int BaseAttackPower => _baseAttackPower;
+    public float CriticalProbability => _criticalProbability;
+
 }

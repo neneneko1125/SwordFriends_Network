@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class EnemyAttack_Dash : EnemyAttack
+public class EnemyAttack_Dash : EnemyAttackHandler
 {
     [SerializeField] private float _dashSpeed = 15f;
     private Rigidbody2D _rb;
