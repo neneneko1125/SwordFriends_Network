@@ -7,7 +7,6 @@ public class BaseHitboxController : NetworkBehaviour
 {
     [SerializeField] protected LayerMask _targetLayer;
 
-    [SerializeField] protected CharacterAttackProfile _attackProfile;
     protected AttackData _currentAttackData;
 
     [Networked] public bool IsAttacking { get; set; }
@@ -46,7 +45,7 @@ public class BaseHitboxController : NetworkBehaviour
 
         if(hitCount > 0)
         {
-            UpdateHitDetection(_currentAttackData.Damage);
+           // UpdateHitDetection(_currentAttackData.Damage);
         }
     }
 

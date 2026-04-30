@@ -1,32 +1,27 @@
 using UnityEngine;
 using Fusion;
+using System.Collections.Generic;
 
 
 public class PlayerMovement : NetworkBehaviour
 {
-    // 横方向の移動速度
-    [SerializeField] private float _moveSpeed = 5f;
-
-    // ジャンプ関連
-    [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private Transform _groundChecker;
     [SerializeField] private float _groundCheckRadius = 0.1f;
     [SerializeField] private LayerMask _groundLayer;
 
-    [SerializeField] private float _ladderSpeed = 5f;
     [SerializeField] private Vector2 _hitBoxSize = new Vector2(0.75f, 5.0f);
     [SerializeField] private LayerMask _ladderLayer;
 
-    [SerializeField] private Animator _animator1;
-    [SerializeField] private Animator _animator2;
-    [SerializeField] private Animator _animator3;
-    [SerializeField] private Animator _animator4;
+    [SerializeField] private List<Animator> _animators = new List<Animator>();
+    private Animator _anim;
+
+    [Networked] protected float SyncMoveSpeed { get; set; }
+    [Networked] protected float SyncJumpForce { get; set; }
+    [Networked] protected float SyncLadderSpeed { get; set; }
 
     [Networked] public bool IsGrounded { get; set; }
     [Networked] public bool IsWalking { get; set; }
-
-    // 右(正の方向)を向いていればtrue
-    [Networked] public bool IsFacingRightNet { get; set; } = true;
+    [Networked] public bool IsFacingRight { get; set; } = true;
     [Networked] public bool IsLadderMode { get; set; } = false;
 
     // プレイヤーの向きを変更するのに使用する
@@ -35,14 +30,30 @@ public class PlayerMovement : NetworkBehaviour
     private float _defaultGravityScale;
 
     private Rigidbody2D _rb;
+    private PlayerSetup _playerSetup;
     private PlayerAttackHandler _playerAttack;
+
+    private PlayerInstanceData _instance;
 
     public override void Spawned()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _playerSetup = GetComponent<PlayerSetup>();
         _playerAttack = GetComponent<PlayerAttackHandler>();
         _playerDefaultScale = _parentTransform.localScale;  // デフォルトのScaleを保存
         _defaultGravityScale = _rb.gravityScale;    // デフォルトの重力を保存
+    }
+
+    public void Setup(PlayerInstanceData instance)
+    {
+        _instance = instance;
+
+        if (HasStateAuthority)
+        {
+            SyncMoveSpeed = _instance.MoveSpeed;
+            SyncJumpForce = _instance.JumpForce;
+            SyncLadderSpeed = _instance.LadderSpeed;
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -81,7 +92,7 @@ public class PlayerMovement : NetworkBehaviour
         ChangeWalkAnimation();
 
         // 向きの反映
-        if (IsFacingRightNet)
+        if (IsFacingRight)
         {
             _parentTransform.localScale = _playerDefaultScale;
         }
@@ -99,7 +110,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
-        _rb.linearVelocityX = direction * _moveSpeed;
+        _rb.linearVelocityX = direction * SyncMoveSpeed;
 
         // 固定更新の中で状態を確定させる
         IsWalking = Mathf.Abs(direction) > 0.1f;
@@ -107,11 +118,11 @@ public class PlayerMovement : NetworkBehaviour
         // 進んでいる方向によってプレイヤーの向きを決定
         if (direction > 0.1f)
         {
-            IsFacingRightNet = true;
+            IsFacingRight = true;
         }
         else if (direction < -0.1f)
         {
-            IsFacingRightNet = false;
+            IsFacingRight = false;
         }
     }
 
@@ -119,7 +130,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (IsGrounded)
         {
-            _rb.linearVelocityY = _jumpForce;
+            _rb.linearVelocityY = SyncJumpForce;
         }
     }
 
@@ -140,7 +151,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Ladder()
     {
         _rb.gravityScale = 0;
-        _rb.linearVelocityY = _ladderSpeed;
+        _rb.linearVelocityY = SyncLadderSpeed;
     }
 
     private void CancelLadder()
@@ -151,22 +162,16 @@ public class PlayerMovement : NetworkBehaviour
 
     private void ChangeWalkAnimation()
     {
-        // どのAnimatorがアクティブ状態かをみる
-        if (_animator1 != null && _animator1.gameObject.activeInHierarchy)
+        int index = _playerSetup.CharacterIndex;
+
+        if (index < _animators.Count && _anim == null)
         {
-            _animator1.SetBool("Walk", IsWalking);
+            _anim = _animators[index];
         }
-        else if (_animator2 != null && _animator2.gameObject.activeInHierarchy)
+
+        if (_anim != null)
         {
-            _animator2.SetBool("Walk", IsWalking);
-        }
-        else if (_animator3 != null && _animator3.gameObject.activeInHierarchy)
-        {
-            _animator3.SetBool("Walk", IsWalking);
-        }
-        else if (_animator4 != null && _animator4.gameObject.activeInHierarchy)
-        {
-            _animator4.SetBool("Walk", IsWalking);
+            _anim.SetBool("Walk", IsWalking);
         }
     }
 

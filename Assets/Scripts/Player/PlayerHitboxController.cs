@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerHitboxController : BaseHitboxController
 {
+    [SerializeField] private PlayerData _playerData;
     private PlayerMovement _playerMovement;
     private PlayerAttackHandler _playerAttack;
 
@@ -10,6 +11,7 @@ public class PlayerHitboxController : BaseHitboxController
         _playerMovement = GetComponent<PlayerMovement>();
         _playerAttack = GetComponent<PlayerAttackHandler>();
     }
+
 
     public override void FixedUpdateNetwork()
     {
@@ -22,20 +24,20 @@ public class PlayerHitboxController : BaseHitboxController
         {
             if (_playerAttack.IsNormalAttacking)
             {
-                _currentAttackData = _attackProfile.AttackPatterns[0];
+                _currentAttackData = _playerData.AttackPatterns[0];
             }
             else if (_playerAttack.IsDashAttacking)
             {
-                _currentAttackData = _attackProfile.AttackPatterns[1];
+                _currentAttackData = _playerData.AttackPatterns[1];
 
             }
             else if (_playerAttack.IsDownAttacking)
             {
-                _currentAttackData = _attackProfile.AttackPatterns[2];
+                _currentAttackData = _playerData.AttackPatterns[2];
             }
             else if (_playerAttack.IsUpAttacking)
             {
-                _currentAttackData = _attackProfile.AttackPatterns[3];
+               _currentAttackData = _playerData.AttackPatterns[3];
             }
         }
 
@@ -45,7 +47,7 @@ public class PlayerHitboxController : BaseHitboxController
 
     protected override Vector2 CalculateHitboxPos()
     {
-        float direction = (_playerMovement != null && !_playerMovement.IsFacingRightNet) ? -1 : 1;
+        float direction = (_playerMovement != null && !_playerMovement.IsFacingRight) ? -1 : 1;
         return (Vector2)transform.position + new Vector2(_currentAttackData.HitboxOffset.x * direction, _currentAttackData.HitboxOffset.y);
     }
 
@@ -61,7 +63,7 @@ public class PlayerHitboxController : BaseHitboxController
     private void OnDrawGizmos()
     {
         // プロフィールがセットされていないなら何もしない（エラー防止）
-        if (_attackProfile == null || _attackProfile.AttackPatterns.Count == 0) return;
+        if (_playerData == null || _playerData.AttackPatterns.Count == 0) return;
 
         // --- ここからエディタ・再生時共通のロジック ---
 
@@ -71,7 +73,7 @@ public class PlayerHitboxController : BaseHitboxController
         {
             // 【非再生時】インスペクターで数値をいじっている時は、
             // とりあえず「0番目（通常攻撃）」を黄色で表示して確認できるようにする
-            dataToDraw = _attackProfile.AttackPatterns[0];
+            dataToDraw = _playerData.AttackPatterns[0];
             Gizmos.color = Color.yellow;
         }
         else
@@ -86,7 +88,7 @@ public class PlayerHitboxController : BaseHitboxController
         if (dataToDraw != null)
         {
             // エディタ時は _playerMovement が null なので、右向き（1）固定で表示
-            float dir = (Application.isPlaying && _playerMovement != null && !_playerMovement.IsFacingRightNet) ? -1f : 1f;
+            float dir = (Application.isPlaying && _playerMovement != null && !_playerMovement.IsFacingRight) ? -1f : 1f;
 
             Vector3 pos = transform.position + new Vector3(dataToDraw.HitboxOffset.x * dir, dataToDraw.HitboxOffset.y, 0);
             Gizmos.DrawWireCube(pos, dataToDraw.HitboxSize);

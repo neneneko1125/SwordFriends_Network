@@ -7,7 +7,7 @@ public class NetworkStarter : MonoBehaviour
     [SerializeField] private GameObject _connectButton;
     [SerializeField] private GameObject _preparationCompletebutton;
     [SerializeField] private GameObject _preparationCancelbutton;
-    [SerializeField] private PlayerReadyStatus _playerDataPrefab;
+    [SerializeField] private PlayerLocalData _playerDataPrefab;
 
     private bool _isSceneLoading = false;
 
@@ -17,6 +17,10 @@ public class NetworkStarter : MonoBehaviour
 
     private void Start()
     {
+        if(_connectButton == null || _preparationCompletebutton == null || _preparationCancelbutton == null)
+        {
+            return;
+        }
         _connectButton.SetActive(true);
         _preparationCompletebutton.SetActive(false);
         _preparationCancelbutton.SetActive(false);
@@ -96,7 +100,7 @@ public class NetworkStarter : MonoBehaviour
 
         foreach (var obj in _runner.GetAllNetworkObjects())
         {
-            if (obj.TryGetComponent<PlayerReadyStatus>(out var data))
+            if (obj.TryGetComponent<PlayerLocalData>(out var data))
             {
                 total++;
                 if (data.IsReady)
@@ -110,9 +114,9 @@ public class NetworkStarter : MonoBehaviour
 
     public void OnClickPreparationComplete()
     {
-        if (PlayerReadyStatus.Local != null)
+        if (PlayerLocalData.Local != null)
         {
-            PlayerReadyStatus.Local.Rpc_SetReady(true);
+            PlayerLocalData.Local.Rpc_SetReady(true);
 
             _preparationCompletebutton.SetActive(false);
             _preparationCancelbutton.SetActive(true);
@@ -121,9 +125,9 @@ public class NetworkStarter : MonoBehaviour
 
     public void OnClickPreparationCancel()
     {
-        if (PlayerReadyStatus.Local != null)
+        if (PlayerLocalData.Local != null)
         {
-            PlayerReadyStatus.Local.Rpc_SetReady(false);
+            PlayerLocalData.Local.Rpc_SetReady(false);
 
             _preparationCompletebutton.SetActive(true);
             _preparationCancelbutton.SetActive(false);

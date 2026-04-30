@@ -93,13 +93,13 @@ public class PlayerAttackHandler : NetworkBehaviour
                 AttackSetup(_attackIntervalTime, _attackAnimationName);
                 DoAttack();
             }
-            else if (inputData.RightDashAttackPressed && _playerMovement.IsFacingRightNet)
+            else if (inputData.RightDashAttackPressed && _playerMovement.IsFacingRight)
             {
                 AttackSetup(_dashAttackIntervalTime, _dashAttackAnimationName);
                 PreparationDashAttack(Vector2.right);
 
             }
-            else if (inputData.LeftDashAttackPressed && !_playerMovement.IsFacingRightNet)
+            else if (inputData.LeftDashAttackPressed && !_playerMovement.IsFacingRight)
             {
                 AttackSetup(_dashAttackIntervalTime, _dashAttackAnimationName);
                 PreparationDashAttack(Vector2.left);

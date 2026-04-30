@@ -18,7 +18,7 @@ public class PlayerHP : BaseHP
         }
 
         //HPÉoÅ[ÇÃç∂âEîΩì]
-        if (_playerMovement.IsFacingRightNet)
+        if (_playerMovement.IsFacingRight)
         {
             _hpBar.fillOrigin = (int)Image.OriginHorizontal.Left;
         }

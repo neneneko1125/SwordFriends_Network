@@ -12,7 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14712956b04e4fc42bf76bbf7f05c557, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  _characterName: Player
   _maxHP: 50
-  _moveSpeed: 6
   _baseAttackPower: 2
-  _criticalProbability: 1
+  _attackPatterns:
+  - Name: Up
+    _attackPowerMultiplier: 1.5
+    HitboxSize: {x: 0.82, y: 1.23}
+    HitboxOffset: {x: 0.84, y: 0.46}
+  - Name: Down
+    _attackPowerMultiplier: 2
+    HitboxSize: {x: 1.5, y: 0.65}
+    HitboxOffset: {x: 0.18, y: -0.42}
+  - Name: Normal
+    _attackPowerMultiplier: 1
+    HitboxSize: {x: 1.29, y: 1.18}
+    HitboxOffset: {x: 0.59, y: 0}
+  - Name: Dash
+    _attackPowerMultiplier: 1.5
+    HitboxSize: {x: 1.76, y: 1.18}
+    HitboxOffset: {x: 0.59, y: 0}
+  _moveSpeed: 7
+  _jumpForce: 20
+  _criticalProbability: 5

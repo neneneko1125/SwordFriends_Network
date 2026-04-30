@@ -6292,7 +6292,7 @@ MonoBehaviour:
   _connectButton: {fileID: 829251589}
   _preparationCompletebutton: {fileID: 574449493}
   _preparationCancelbutton: {fileID: 589761908}
-  _playerDataPrefab: {fileID: 2713102211689225723, guid: 58ea709c2c8436c46b99809eea1db442, type: 3}
+  _playerDataPrefab: {fileID: 5423599004026678284, guid: 58ea709c2c8436c46b99809eea1db442, type: 3}
 --- !u!4 &1425467050
 Transform:
   m_ObjectHideFlags: 0

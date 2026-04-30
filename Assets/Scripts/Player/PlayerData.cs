@@ -1,24 +1,26 @@
+
 using UnityEngine;
 
+/// <summary>
+/// プレイヤー特有のステータス
+/// </summary>
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData")]
-public class PlayerData : ScriptableObject
+public class PlayerData : BaseCharacterData
 {
-    [Header("最大HP")]
-    [SerializeField] private int _maxHP;
-
     [Header("移動速度")]
-    [SerializeField] private int _moveSpeed;
+    [SerializeField] private float _moveSpeed;
 
-    [Header("基礎攻撃力")]
-    [SerializeField] private int _baseAttackPower;
+    [Header("ジャンプ")]
+    [SerializeField] private float _jumpForce;
 
+    [Header("はしごを登る速度")]
+    [SerializeField] private float _ladderSpeed;
     [Header("会心率")]
     [SerializeField] private float _criticalProbability;
 
     //プロパティ(外部から読み取る用)
-    public int MaxHP => _maxHP;
-    public int MoveSpeed => _moveSpeed;
-    public int BaseAttackPower => _baseAttackPower;
+    public float MoveSpeed => _moveSpeed;
+    public float JumpForce => _jumpForce;
+    public float LadderSpeed => _ladderSpeed;
     public float CriticalProbability => _criticalProbability;
-
 }

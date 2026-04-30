@@ -1,16 +1,41 @@
 using UnityEngine;
 
-public class PlayerInstanceData : MonoBehaviour
+/// <summary>
+/// ここでは計算だけ　同期はそれぞれのクラスで
+/// </summary>
+public class PlayerInstanceData : ICharacterInstance
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public PlayerData PlayerData;
+
+    public float MoveSpeed;
+    public float JumpForce;
+    public float LadderSpeed;
+    public int BaseAttackPower;
+    public float CriticalProbability;
+
+    public int CurrentHP { get; set; }
+    public BaseCharacterData MasterData => PlayerData;
+    public bool IsDead => CurrentHP <= 0;
+
+    public PlayerInstanceData(PlayerData playerData)
     {
-        
+        PlayerData = playerData;
+
+        CurrentHP = playerData.MaxHP;
+        MoveSpeed = playerData.MoveSpeed;
+        JumpForce = playerData.JumpForce;
+        LadderSpeed = playerData.LadderSpeed;
+        BaseAttackPower = playerData.BaseAttackPower;
+        CriticalProbability = playerData.CriticalProbability;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int damage)
     {
-        
+        CurrentHP = damage;
+
+        if (CurrentHP <= 0)
+        {
+            CurrentHP = 0;
+        }
     }
 }

@@ -202,8 +202,8 @@ GameObject:
   - component: {fileID: 2430063790469313525}
   - component: {fileID: 5077861211789540210}
   - component: {fileID: -7750627726590970273}
+  - component: {fileID: 2560332084122637249}
   - component: {fileID: 7463779445625935006}
-  - component: {fileID: 2713102211689225723}
   - component: {fileID: 8611194221802397921}
   - component: {fileID: 3832820301584296166}
   - component: {fileID: 4484465445791512334}
@@ -246,9 +246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758ec9d9998b67d4d991a9a0ea13d4cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHP
-  _maxHP: 200
-  _invincibleTime: 0.5
-  _blinkingSpeed: 10
   _hpBar: {fileID: 3543462107658777298}
 --- !u!114 &2430063790469313525
 MonoBehaviour:
@@ -265,8 +262,8 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  _attackProfile: {fileID: 11400000, guid: 6a3b53a0001c383448f397fbd773eb77, type: 2}
   _IsAttacking: 0
+  _playerData: {fileID: 11400000, guid: ce14bc8612e62c24aa687692aa3b76c7, type: 2}
 --- !u!114 &5077861211789540210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +312,20 @@ MonoBehaviour:
   _IsDashAttacking: 0
   _IsDownAttacking: 0
   _IsUpAttacking: 0
+--- !u!114 &2560332084122637249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593176349790120795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52b82f52951d2341aa936f7c9751f43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerLocalData
+  _playerData: {fileID: 11400000, guid: ce14bc8612e62c24aa687692aa3b76c7, type: 2}
+  _IsReady: 0
 --- !u!114 &7463779445625935006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,40 +338,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6786d7b48d97b6546ab2fa25daa3296e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  _moveSpeed: 8
-  _jumpForce: 25
   _groundChecker: {fileID: 8912557629190821556}
   _groundCheckRadius: 0.1
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  _ladderSpeed: 8
   _hitBoxSize: {x: 0.75, y: 0.86}
   _ladderLayer:
     serializedVersion: 2
     m_Bits: 512
-  _animator1: {fileID: 7422554817250482377}
-  _animator2: {fileID: 8009192713518372642}
-  _animator3: {fileID: 6310731983056583251}
-  _animator4: {fileID: 7269436270082811286}
+  _animators:
+  - {fileID: 7422554817250482377}
+  - {fileID: 8009192713518372642}
+  - {fileID: 6310731983056583251}
+  - {fileID: 7269436270082811286}
   _IsGrounded: 0
   _IsWalking: 0
-  _IsFacingRightNet: 1
+  _IsFacingRight: 1
   _IsLadderMode: 1
   _parentTransform: {fileID: 4338923602519308038}
---- !u!114 &2713102211689225723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2593176349790120795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4948ba13600a64c47bc7689b833e68c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  _IsReady: 0
 --- !u!114 &8611194221802397921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,8 +395,8 @@ MonoBehaviour:
   - {fileID: 7939917354921835840}
   - {fileID: 2430063790469313525}
   - {fileID: -7750627726590970273}
+  - {fileID: 2560332084122637249}
   - {fileID: 7463779445625935006}
-  - {fileID: 2713102211689225723}
   - {fileID: 8611194221802397921}
   - {fileID: 6628221990522706019}
   ForceRemoteRenderTimeframe: 0

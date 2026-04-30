@@ -4,24 +4,29 @@ using UnityEngine.UI;
 
 public class BaseHP : NetworkBehaviour
 {
-    [SerializeField] protected int _maxHP = 5;
-    [SerializeField] protected float _invincibleTime = 1.0f;
-    [SerializeField] protected float _blinkingSpeed = 1.0f;
-
     [SerializeField] protected Image _hpBar;
 
-    [Networked] protected int CurrentHP { get; set; }
+    //Sync:同期　値の変更はInstanceDataがやってくれたので、ここでは同期処理をする
+    [Networked] protected int SyncMaxHP { get; set; }
+    [Networked] protected int SyncCurrentHP { get; set; }
+    [Networked] protected float SyncInvincibleTime { get; set; }
     [Networked] protected bool IsInvincible { get; set; }
     [Networked] protected TickTimer InvincibilityTimer { get; set; }
 
-    public override void Spawned()
-    {
-        if (!HasStateAuthority)
-        {
-            return;
-        }
+    //インタフェースのおかげでプレイヤーでも敵でも対応可能
+    protected ICharacterInstance _instance;
 
-        CurrentHP = _maxHP;
+    public void Setup(ICharacterInstance instance)
+    {
+        //PlayerData,もしくはEnemyData
+        _instance = instance;
+
+        if (HasStateAuthority)
+        {
+            SyncMaxHP = _instance.MasterData.MaxHP;
+            SyncCurrentHP = SyncMaxHP;
+            SyncInvincibleTime = _instance.MasterData.InvincibleTime;
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -34,10 +39,15 @@ public class BaseHP : NetworkBehaviour
 
     public override void Render()
     {
+        if (_instance == null)
+        {
+            return;
+        }
+
         if (IsInvincible)
         {
             // 時間を点滅速度で割った余りが 0.5 未満かどうかで 0 か 1 を決める
-            float alpha = (Time.time * _blinkingSpeed % 1.0f) < 0.5f ? 0f : 1f;
+            float alpha = (Time.time * _instance.MasterData.BlinkingSpeed % 1.0f) < 0.5f ? 0f : 1f;
             SetAlpha(alpha);
         }
         else
@@ -53,25 +63,25 @@ public class BaseHP : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]    //誰でもRPCを呼べる　そのオブジェクトの管理権限を持っている人の画面だけで実行
     public void Rpc_TakeDamage(int damage)
     {
-        if (IsInvincible)
+        if (IsInvincible || _instance == null)
         {
             return;
         }
 
-        CurrentHP -= damage;
+        _instance.TakeDamage(damage);
+        SyncCurrentHP = _instance.CurrentHP;    //ダメージ処理の直後も同期
+
         Rpc_AllEffects(damage);
 
-        if (CurrentHP <= 0)
+        if (_instance.IsDead)
         {
-            //死亡処理
-            CurrentHP = 0;
             Runner.Despawn(Object);
         }
         else
         {
             //無敵処理
             IsInvincible = true;
-            InvincibilityTimer = TickTimer.CreateFromSeconds(Runner, _invincibleTime);
+            InvincibilityTimer = TickTimer.CreateFromSeconds(Runner, _instance.MasterData.InvincibleTime);
         }
     }
 
@@ -98,7 +108,7 @@ public class BaseHP : NetworkBehaviour
     {
         if (_hpBar != null)
         {
-            _hpBar.fillAmount = (float)CurrentHP / _maxHP;
+            _hpBar.fillAmount = (float)SyncCurrentHP / SyncMaxHP;
         }
 
         UpdateBarDirection();
