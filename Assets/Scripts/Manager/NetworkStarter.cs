@@ -7,7 +7,7 @@ public class NetworkStarter : MonoBehaviour
     [SerializeField] private GameObject _connectButton;
     [SerializeField] private GameObject _preparationCompletebutton;
     [SerializeField] private GameObject _preparationCancelbutton;
-    [SerializeField] private PlayerLocalData _playerDataPrefab;
+    [SerializeField] private PlayerCore _playerDataPrefab;
 
     private bool _isSceneLoading = false;
 
@@ -100,7 +100,7 @@ public class NetworkStarter : MonoBehaviour
 
         foreach (var obj in _runner.GetAllNetworkObjects())
         {
-            if (obj.TryGetComponent<PlayerLocalData>(out var data))
+            if (obj.TryGetComponent<PlayerCore>(out var data))
             {
                 total++;
                 if (data.IsReady)
@@ -114,9 +114,9 @@ public class NetworkStarter : MonoBehaviour
 
     public void OnClickPreparationComplete()
     {
-        if (PlayerLocalData.Local != null)
+        if (PlayerCore.Local != null)
         {
-            PlayerLocalData.Local.Rpc_SetReady(true);
+            PlayerCore.Local.Rpc_SetReady(true);
 
             _preparationCompletebutton.SetActive(false);
             _preparationCancelbutton.SetActive(true);
@@ -125,9 +125,9 @@ public class NetworkStarter : MonoBehaviour
 
     public void OnClickPreparationCancel()
     {
-        if (PlayerLocalData.Local != null)
+        if (PlayerCore.Local != null)
         {
-            PlayerLocalData.Local.Rpc_SetReady(false);
+            PlayerCore.Local.Rpc_SetReady(false);
 
             _preparationCompletebutton.SetActive(true);
             _preparationCancelbutton.SetActive(false);

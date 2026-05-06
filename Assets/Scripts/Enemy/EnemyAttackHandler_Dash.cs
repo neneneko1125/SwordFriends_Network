@@ -1,15 +1,16 @@
 using Fusion;
 using UnityEngine;
 
-public class EnemyAttack_Dash : EnemyAttackHandler
+public class EnemyAttackHandler_Dash : EnemyAttackHandler
 {
-    [SerializeField] private float _dashSpeed = 15f;
     private Rigidbody2D _rb;
+    private AttackData data;
 
     public override void Spawned()
     {
         base.Spawned();
         _rb = GetComponent<Rigidbody2D>();
+        data = _instance.BaseData.AttackPatterns[0];
     }
 
     public override void FixedUpdateNetwork()
@@ -18,13 +19,13 @@ public class EnemyAttack_Dash : EnemyAttackHandler
 
         if (IsAttacking)
         {
-            if (_enemyMovement.IsFacingRightNet)
+            if (_enemyMovement.IsFacingRight)
             {
-                _rb.linearVelocityX = _dashSpeed;
+                _rb.linearVelocityX = data.DashSpeed;
             }
             else
             {
-                _rb.linearVelocityX = -_dashSpeed;
+                _rb.linearVelocityX = -data.DashSpeed;
             }
         }
     }

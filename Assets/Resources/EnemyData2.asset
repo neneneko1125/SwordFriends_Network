@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20f35673c926eb479c730e75dc72d7a, type: 3}
+  m_Name: EnemyData2
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  <CharacterName>k__BackingField: Enemy1
+  <MaxHP>k__BackingField: 20
+  <InvincibleTime>k__BackingField: 0.1
+  <BlinkingSpeed>k__BackingField: 0.05
+  <BaseAttackPower>k__BackingField: 2
+  <AttackPatterns>k__BackingField:
+  - <Name>k__BackingField: Normal
+    <AnimationTriggerName>k__BackingField: Attack
+    <IntervalTime>k__BackingField: 2
+    <AttackDuration>k__BackingField: 0.2
+    <AttackPowerMultiplier>k__BackingField: 1
+    <HitboxDuration>k__BackingField: 0.2
+    <HitboxSize>k__BackingField: {x: 2.97, y: 2.5}
+    <HitboxOffset>k__BackingField: {x: 0.09, y: 0.42}
+    <DashSpeed>k__BackingField: 0
+    <MinDashSpeed>k__BackingField: 0
+    <BrakeForce>k__BackingField: 0
+    <UpSpeed>k__BackingField: 0
+    <DownSpeed>k__BackingField: 0
+  <PatrolSpeed>k__BackingField: 1
+  <ChaseSpeed>k__BackingField: 3
+  <ChaseSpeedMinMultiplier>k__BackingField: 0.75
+  <ChaseSpeedMaxMultiplier>k__BackingField: 1.25
+  <PatrolSpeedMinMultiplier>k__BackingField: 0.9
+  <PatrolSpeedMaxMultiplier>k__BackingField: 1.1
+  <DetectDistance>k__BackingField: 5
+  <MinDistance>k__BackingField: 1
+  <AttackDistance>k__BackingField: 1
+  <AttackSignTime>k__BackingField: 0.5
+  <DropItem>k__BackingField: {fileID: 0}

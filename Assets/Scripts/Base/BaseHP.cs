@@ -18,14 +18,14 @@ public class BaseHP : NetworkBehaviour
 
     public void Setup(ICharacterInstance instance)
     {
-        //PlayerData,‚à‚µ‚­‚ÍEnemyData
+        //EnemyData,‚à‚µ‚­‚ÍEnemyData
         _instance = instance;
 
         if (HasStateAuthority)
         {
-            SyncMaxHP = _instance.MasterData.MaxHP;
+            SyncMaxHP = _instance.BaseData.MaxHP;
             SyncCurrentHP = SyncMaxHP;
-            SyncInvincibleTime = _instance.MasterData.InvincibleTime;
+            SyncInvincibleTime = _instance.BaseData.InvincibleTime;
         }
     }
 
@@ -47,7 +47,7 @@ public class BaseHP : NetworkBehaviour
         if (IsInvincible)
         {
             // ŽžŠÔ‚ð“_–Å‘¬“x‚ÅŠ„‚Á‚½—]‚è‚ª 0.5 –¢–ž‚©‚Ç‚¤‚©‚Å 0 ‚© 1 ‚ðŒˆ‚ß‚é
-            float alpha = (Time.time * _instance.MasterData.BlinkingSpeed % 1.0f) < 0.5f ? 0f : 1f;
+            float alpha = (Time.time * _instance.BaseData.BlinkingSpeed % 1.0f) < 0.5f ? 0f : 1f;
             SetAlpha(alpha);
         }
         else
@@ -73,7 +73,7 @@ public class BaseHP : NetworkBehaviour
 
         Rpc_AllEffects(damage);
 
-        if (_instance.IsDead)
+        if (_instance.IsDead || SyncCurrentHP <= 0)
         {
             Runner.Despawn(Object);
         }
@@ -81,7 +81,7 @@ public class BaseHP : NetworkBehaviour
         {
             //–³“Gˆ—
             IsInvincible = true;
-            InvincibilityTimer = TickTimer.CreateFromSeconds(Runner, _instance.MasterData.InvincibleTime);
+            InvincibilityTimer = TickTimer.CreateFromSeconds(Runner, _instance.BaseData.InvincibleTime);
         }
     }
 

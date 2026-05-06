@@ -198,11 +198,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4338923602519308038}
+  - component: {fileID: 1209713141329127867}
+  - component: {fileID: 6521413431647359173}
   - component: {fileID: 7939917354921835840}
-  - component: {fileID: 2430063790469313525}
   - component: {fileID: 5077861211789540210}
   - component: {fileID: -7750627726590970273}
-  - component: {fileID: 2560332084122637249}
   - component: {fileID: 7463779445625935006}
   - component: {fileID: 8611194221802397921}
   - component: {fileID: 3832820301584296166}
@@ -234,6 +234,37 @@ Transform:
   - {fileID: 8912557629190821556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1209713141329127867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593176349790120795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f3c5a68c46a1445beba2b9a9b6f35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCore
+  _playerData: {fileID: 11400000, guid: ce14bc8612e62c24aa687692aa3b76c7, type: 2}
+  _IsReady: 0
+--- !u!114 &6521413431647359173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593176349790120795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c690e07f1637f84fbe81672fe755991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterHitboxController
+  _baseData: {fileID: 11400000, guid: ce14bc8612e62c24aa687692aa3b76c7, type: 2}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  _IsAttacking: 0
 --- !u!114 &7939917354921835840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,23 +278,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHP
   _hpBar: {fileID: 3543462107658777298}
---- !u!114 &2430063790469313525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2593176349790120795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4607f5918df0444592b595c8974f11f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackObject
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  _IsAttacking: 0
-  _playerData: {fileID: 11400000, guid: ce14bc8612e62c24aa687692aa3b76c7, type: 2}
 --- !u!114 &5077861211789540210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,44 +302,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0efa7f75ef253e34395c99efe168fda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  _dashMaxSpeed: 20
-  _dashMinSpeed: 7
-  _downSpeed: 15
-  _upSpeed: 20
-  _animator1: {fileID: 7422554817250482377}
-  _animator2: {fileID: 8009192713518372642}
-  _animator3: {fileID: 6310731983056583251}
-  _animator4: {fileID: 7269436270082811286}
-  _attackAnimationName: Attack
-  _dashAttackAnimationName: DashAttack
-  _downAttackAnimationName: DownAttack
-  _upAttackAnimationName: UpAttack
-  _attackIntervalTime: 0.1
-  _dashAttackIntervalTime: 0.25
-  _downAttackIntervalTime: 0.3
-  _upAttackIntervalTime: 0.15
-  _hitboxActiveDuration: 0.1
-  _dashHitboxActiveDuration: 0.2
-  _downHitboxActiveDuration: 0.4
-  _upHitboxActiveDuration: 0.15
+  _animators:
+  - {fileID: 7422554817250482377}
+  - {fileID: 8009192713518372642}
+  - {fileID: 6310731983056583251}
+  - {fileID: 7269436270082811286}
   _IsNormalAttacking: 0
   _IsDashAttacking: 0
   _IsDownAttacking: 0
   _IsUpAttacking: 0
---- !u!114 &2560332084122637249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2593176349790120795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a52b82f52951d2341aa936f7c9751f43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerLocalData
-  _playerData: {fileID: 11400000, guid: ce14bc8612e62c24aa687692aa3b76c7, type: 2}
-  _IsReady: 0
 --- !u!114 &7463779445625935006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +328,7 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  _hitBoxSize: {x: 0.75, y: 0.86}
+  _ladderHitBoxSize: {x: 0.75, y: 0.71}
   _ladderLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -392,10 +377,10 @@ MonoBehaviour:
   Flags: 786433
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 1209713141329127867}
+  - {fileID: 6521413431647359173}
   - {fileID: 7939917354921835840}
-  - {fileID: 2430063790469313525}
   - {fileID: -7750627726590970273}
-  - {fileID: 2560332084122637249}
   - {fileID: 7463779445625935006}
   - {fileID: 8611194221802397921}
   - {fileID: 6628221990522706019}

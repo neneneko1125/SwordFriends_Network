@@ -429,8 +429,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2622555778042105239}
+  - component: {fileID: 3569959435686205439}
+  - component: {fileID: 128198097541743128}
   - component: {fileID: 4436185947522516390}
-  - component: {fileID: 4596834986609270874}
   - component: {fileID: 4256874519635568535}
   - component: {fileID: -8971843124456479845}
   - component: {fileID: 8765296986174664066}
@@ -463,6 +464,36 @@ Transform:
   - {fileID: 224751075480623965}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3569959435686205439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8573663825391406416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c690e07f1637f84fbe81672fe755991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterHitboxController
+  _baseData: {fileID: 11400000, guid: 5863b33a80209cf498c47f028954533e, type: 2}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _IsAttacking: 0
+--- !u!114 &128198097541743128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8573663825391406416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e304bc8d304385742a1723ea31b8aeb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyCore
+  _enemyData: {fileID: 11400000, guid: 5863b33a80209cf498c47f028954533e, type: 2}
 --- !u!114 &4436185947522516390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,29 +507,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
   _animator: {fileID: 18836659529071028}
-  _attackIntervalTime: 2
-  _attackDistance: 1
-  _hitboxActiveDuration: 0.2
-  _attackSignTime: 0.5
   _attackSign: {fileID: 1056811795479543635}
   _IsAttackSigning: 0
-  _IsAttacking: 0
---- !u!114 &4596834986609270874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8573663825391406416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bdef1e94173c564db7227ad39ddbb12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackObject
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _attackProfile: {fileID: 11400000, guid: c0976abbdbc094740b020347185907ac, type: 2}
   _IsAttacking: 0
 --- !u!114 &4256874519635568535
 MonoBehaviour:
@@ -512,19 +522,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e34f47e9617a654986f12a6f765e2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  _basePatrolSpeed: 2
-  _baseChaseSpeed: 4
-  _chaseSpeedMinMultiplier: 0.75
-  _chaseSpeedMaxMultiplier: 1.25
-  _patrolSpeedMinMultiplier: 0.9
-  _patrolSpeedMaxMultiplier: 1.1
-  _detectDistance: 3
-  _minDistance: 0.5
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
   _wallCheckerRayLength: 1
   _cliffCheckerRayLength: 1.2
+  _cliffCheckerRayOffset: 0.5
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -544,9 +547,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886b33fec0edb824ca94ed296d15f1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHP
-  _maxHP: 15
-  _invincibleTime: 0.1
-  _blinkingSpeed: 10
   _hpBar: {fileID: 9164267357442308730}
   _effectPrefab: {fileID: 7392557060659208825, guid: cb2b44917ea26ab4db290f3e4fb042f6, type: 3}
 --- !u!212 &8765296986174664066
@@ -712,8 +712,9 @@ MonoBehaviour:
   Flags: 131073
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 3569959435686205439}
+  - {fileID: 128198097541743128}
   - {fileID: 4436185947522516390}
-  - {fileID: 4596834986609270874}
   - {fileID: 4256874519635568535}
   - {fileID: -8971843124456479845}
   - {fileID: 4354856166451616340}

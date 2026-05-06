@@ -1,4 +1,3 @@
-using UnityEngine;
 
 /// <summary>
 /// ここでは計算だけ　同期はそれぞれのクラスで
@@ -14,9 +13,10 @@ public class PlayerInstanceData : ICharacterInstance
     public float CriticalProbability;
 
     public int CurrentHP { get; set; }
-    public BaseCharacterData MasterData => PlayerData;
+    public BaseCharacterData BaseData => PlayerData;      //マスターデータがほしければこれを使う
     public bool IsDead => CurrentHP <= 0;
 
+    // マスターデータをもらって、初期値を設定
     public PlayerInstanceData(PlayerData playerData)
     {
         PlayerData = playerData;
@@ -31,7 +31,7 @@ public class PlayerInstanceData : ICharacterInstance
 
     public void TakeDamage(int damage)
     {
-        CurrentHP = damage;
+        CurrentHP -= damage;
 
         if (CurrentHP <= 0)
         {

@@ -9,7 +9,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float _groundCheckRadius = 0.1f;
     [SerializeField] private LayerMask _groundLayer;
 
-    [SerializeField] private Vector2 _hitBoxSize = new Vector2(0.75f, 5.0f);
+    [SerializeField] private Vector2 _ladderHitBoxSize = new Vector2(0.75f, 5.0f);
     [SerializeField] private LayerMask _ladderLayer;
 
     [SerializeField] private List<Animator> _animators = new List<Animator>();
@@ -85,6 +85,7 @@ public class PlayerMovement : NetworkBehaviour
                 CancelLadder();     // はしごを上ってるとき、はしごボタンを離すとはしごモードOFF
             }
         }
+
     }
 
     public override void Render()
@@ -136,7 +137,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void CheckLadder()
     {
-        Collider2D hit = Physics2D.OverlapBox(transform.position, _hitBoxSize, 0, _ladderLayer);    // はしごチェック
+        Collider2D hit = Physics2D.OverlapBox(transform.position, _ladderHitBoxSize, 0, _ladderLayer);    // はしごチェック
 
         if (hit != null)
         {
@@ -180,7 +181,7 @@ public class PlayerMovement : NetworkBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, _hitBoxSize);
+        Gizmos.DrawWireCube(transform.position, _ladderHitBoxSize);
     }
 }
 

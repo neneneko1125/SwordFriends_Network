@@ -12,26 +12,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14712956b04e4fc42bf76bbf7f05c557, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  _characterName: Player
-  _maxHP: 50
-  _baseAttackPower: 2
-  _attackPatterns:
-  - Name: Up
-    _attackPowerMultiplier: 1.5
-    HitboxSize: {x: 0.82, y: 1.23}
-    HitboxOffset: {x: 0.84, y: 0.46}
-  - Name: Down
-    _attackPowerMultiplier: 2
-    HitboxSize: {x: 1.5, y: 0.65}
-    HitboxOffset: {x: 0.18, y: -0.42}
-  - Name: Normal
-    _attackPowerMultiplier: 1
-    HitboxSize: {x: 1.29, y: 1.18}
-    HitboxOffset: {x: 0.59, y: 0}
-  - Name: Dash
-    _attackPowerMultiplier: 1.5
-    HitboxSize: {x: 1.76, y: 1.18}
-    HitboxOffset: {x: 0.59, y: 0}
-  _moveSpeed: 7
-  _jumpForce: 20
-  _criticalProbability: 5
+  <CharacterName>k__BackingField: Default
+  <MaxHP>k__BackingField: 50
+  <InvincibleTime>k__BackingField: 0.15
+  <BlinkingSpeed>k__BackingField: 0.05
+  <BaseAttackPower>k__BackingField: 1
+  <AttackPatterns>k__BackingField:
+  - <Name>k__BackingField: Normal
+    <AnimationTriggerName>k__BackingField: Attack
+    <IntervalTime>k__BackingField: 0.1
+    <AttackDuration>k__BackingField: 0.1
+    <AttackPowerMultiplier>k__BackingField: 1
+    <HitboxDuration>k__BackingField: 0.05
+    <HitboxSize>k__BackingField: {x: 1.38, y: 1.39}
+    <HitboxOffset>k__BackingField: {x: 0.53, y: -0.04}
+    <DashSpeed>k__BackingField: 0
+    <MinDashSpeed>k__BackingField: 0
+    <BrakeForce>k__BackingField: 0
+    <UpSpeed>k__BackingField: 0
+    <DownSpeed>k__BackingField: 0
+  - <Name>k__BackingField: Dash
+    <AnimationTriggerName>k__BackingField: DashAttack
+    <IntervalTime>k__BackingField: 0.3
+    <AttackDuration>k__BackingField: 0.2
+    <AttackPowerMultiplier>k__BackingField: 3
+    <HitboxDuration>k__BackingField: 0.2
+    <HitboxSize>k__BackingField: {x: 1.98, y: 0.87}
+    <HitboxOffset>k__BackingField: {x: 0.36, y: -0.04}
+    <DashSpeed>k__BackingField: 30
+    <MinDashSpeed>k__BackingField: 5
+    <BrakeForce>k__BackingField: 0.8
+    <UpSpeed>k__BackingField: 0
+    <DownSpeed>k__BackingField: 0
+  - <Name>k__BackingField: Down
+    <AnimationTriggerName>k__BackingField: DownAttack
+    <IntervalTime>k__BackingField: 0.3
+    <AttackDuration>k__BackingField: 0.3
+    <AttackPowerMultiplier>k__BackingField: 5
+    <HitboxDuration>k__BackingField: 0.2
+    <HitboxSize>k__BackingField: {x: 1.56, y: 0.52}
+    <HitboxOffset>k__BackingField: {x: 0.39, y: -0.6}
+    <DashSpeed>k__BackingField: 0
+    <MinDashSpeed>k__BackingField: 0
+    <BrakeForce>k__BackingField: 0
+    <UpSpeed>k__BackingField: 0
+    <DownSpeed>k__BackingField: 30
+  - <Name>k__BackingField: Up
+    <AnimationTriggerName>k__BackingField: UpAttack
+    <IntervalTime>k__BackingField: 0.15
+    <AttackDuration>k__BackingField: 0.1
+    <AttackPowerMultiplier>k__BackingField: 2
+    <HitboxDuration>k__BackingField: 0.1
+    <HitboxSize>k__BackingField: {x: 1.15, y: 1.82}
+    <HitboxOffset>k__BackingField: {x: 0.53, y: 0.41}
+    <DashSpeed>k__BackingField: 0
+    <MinDashSpeed>k__BackingField: 0
+    <BrakeForce>k__BackingField: 0
+    <UpSpeed>k__BackingField: 18
+    <DownSpeed>k__BackingField: 0
+  <MoveSpeed>k__BackingField: 7
+  <JumpForce>k__BackingField: 28
+  <LadderSpeed>k__BackingField: 8
+  <CriticalProbability>k__BackingField: 10

@@ -1,21 +1,18 @@
 using Fusion;
-using UnityEngine;
+using System;
 using System.Collections;
+using UnityEngine;
 
 public class EnemyAttackHandler : NetworkBehaviour
 {
     [SerializeField] protected Animator _animator;
-    [SerializeField] protected float _attackIntervalTime = 0.25f;
-    [SerializeField] protected float _attackDistance = 1.0f;
-    [SerializeField] protected float _hitboxActiveDuration = 0.2f;
-
-    [SerializeField] protected float _attackSignTime = 1.0f;
     [SerializeField] protected GameObject _attackSign;
 
     //攻撃した回数を同期する  boolでやるとネットワークで見逃される可能性が高い
     //この値が変化したら、OnAttackCountChangedメソッドが呼び出される(Fusionの機能)
     [Networked]
     [OnChangedRender(nameof(OnAttackCountChanged))] protected int AttackCount { get; set; }
+
     //当たり判定を消すタイミングを管理するタイマー(Fusionの機能)
     [Networked] protected TickTimer HitboxDisableTimer { get; set; }
     [Networked] protected TickTimer AttackSignTimer { get; set; }
@@ -27,12 +24,19 @@ public class EnemyAttackHandler : NetworkBehaviour
     [Networked] protected float NextAttackStartTime { get; set; }
 
     protected EnemyMovement _enemyMovement;
-    protected EnemyHitboxController _enemyAttackObject;
+    protected CharacterHitboxController _hitboxController;
+
+    protected EnemyInstanceData _instance;
 
     public override void Spawned()
     {
         _enemyMovement = GetComponent<EnemyMovement>();
-        _enemyAttackObject = GetComponent<EnemyHitboxController>();
+        _hitboxController = GetComponent<CharacterHitboxController>();
+    }
+
+    public void Setup(EnemyInstanceData instance)
+    {
+        _instance = instance;
     }
 
     public override void Render()
@@ -51,9 +55,9 @@ public class EnemyAttackHandler : NetworkBehaviour
         if (HitboxDisableTimer.Expired(Runner))
         {
             IsAttacking = false;
-            _enemyAttackObject.IsAttacking = false;
+            _hitboxController.IsAttacking = false;
             HitboxDisableTimer = TickTimer.None;    //念のため
-        } 
+        }
 
         if (_enemyMovement.TargetObject == null)
         {
@@ -66,7 +70,7 @@ public class EnemyAttackHandler : NetworkBehaviour
 
             // 攻撃フラグも念のためリセット
             IsAttacking = false;
-            _enemyAttackObject.IsAttacking = false;
+            _hitboxController.IsAttacking = false;
             return;
         }
 
@@ -82,7 +86,7 @@ public class EnemyAttackHandler : NetworkBehaviour
         float distance = Mathf.Abs(_enemyMovement.TargetObject.transform.position.x - transform.position.x);
 
         //攻撃サイン中じゃない かつ インターバルが終了している かつ ターゲットとの距離が一定より小さいならば
-        if (!IsAttackSigning && Runner.SimulationTime >= NextAttackStartTime && distance < _attackDistance)
+        if (!IsAttackSigning && Runner.SimulationTime >= NextAttackStartTime && distance < _instance.EnemyData.AttackDistance)
         {
             return true;
         }
@@ -95,7 +99,7 @@ public class EnemyAttackHandler : NetworkBehaviour
     protected void AttackSign()
     {
         IsAttackSigning = true;
-        AttackSignTimer = TickTimer.CreateFromSeconds(Runner, _attackSignTime);
+        AttackSignTimer = TickTimer.CreateFromSeconds(Runner, _instance.EnemyData.AttackSignTime);
     }
 
     private void CheckAttackSignTimeout()
@@ -104,19 +108,22 @@ public class EnemyAttackHandler : NetworkBehaviour
         {
             AttackSignTimer = TickTimer.None;
             IsAttackSigning = false;
-            DoAttack();
+            ExecuteAttack();
         }
     }
 
-    protected virtual void DoAttack()
+    protected virtual void ExecuteAttack()
     {
+        AttackData data = _instance.BaseData.AttackPatterns[0];     // 基本的に敵の攻撃は1種類　そうじゃないやつはこのクラスを継承してメソッドを追加なりする
+        _hitboxController.SetupAttack(data, _enemyMovement.IsFacingRight, _instance.BaseAttackPower);
+
         IsAttacking = true;
-        _enemyAttackObject.IsAttacking = true;
+        _hitboxController.IsAttacking = true;
         AttackCount++;
-        NextAttackStartTime = Runner.SimulationTime + _attackIntervalTime;
+        NextAttackStartTime = Runner.SimulationTime + data.IntervalTime;
 
         //ここで攻撃ON 攻撃OFFタイマーも起動
-        HitboxDisableTimer = TickTimer.CreateFromSeconds(Runner, _hitboxActiveDuration);
+        HitboxDisableTimer = TickTimer.CreateFromSeconds(Runner, data.AttackDuration);
     }
 
     protected void OnAttackCountChanged()

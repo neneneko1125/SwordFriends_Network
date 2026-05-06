@@ -21,7 +21,7 @@ public class EnemyHP : BaseHP
         }
 
         //HPÉoÅ[ÇÃç∂âEîΩì]
-        if (_enemyMovement.IsFacingRightNet)
+        if (_enemyMovement.IsFacingRight)
         {
             _hpBar.fillOrigin = (int)Image.OriginHorizontal.Left;
         }

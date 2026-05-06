@@ -7,14 +7,26 @@ using UnityEngine;
 [System.Serializable]
 public class AttackData
 {
-    [Header("攻撃名")]
-    public string Name;
-    [Header("攻撃力倍率 (1なら1倍、2なら2倍...)")]
-    public float _attackPowerMultiplier;
-    [Header("攻撃判定の大きさ")]
-    public Vector2 HitboxSize;
-    [Header("中心からどれだけ離れているか")]
-    public Vector2 HitboxOffset;
+    [field: Header("攻撃設定")]
+    [field: SerializeField] public string Name { get; private set; } = "Normal";
+    [field: SerializeField] public string AnimationTriggerName { get; private set; } = "Attack";
+    [field: SerializeField] public float IntervalTime { get; private set; } = 2f;
+    [field: SerializeField] public float AttackDuration { get; private set; } = 0.25f;
+
+    [field: Header("威力・判定")]
+    [field: SerializeField] public float AttackPowerMultiplier { get; private set; } = 1.0f;
+    [field: SerializeField] public float HitboxDuration { get; private set; } = 0.2f;
+    [field: SerializeField] public Vector2 HitboxSize { get; private set; }
+    [field: SerializeField] public Vector2 HitboxOffset { get; private set; }
+
+    [field: Header("物理挙動")]
+    [field: SerializeField] public float DashSpeed { get; private set; }
+    [field: SerializeField] public float MinDashSpeed { get; private set; }
+    [Tooltip("1フレームごとのダッシュスピード減少率")]
+    [field: SerializeField] public float BrakeForce { get; private set; }
+    [field: SerializeField] public float UpSpeed { get; private set; }
+    [field: SerializeField] public float DownSpeed { get; private set; }
+
 }
 
 /// <summary>
@@ -22,30 +34,15 @@ public class AttackData
 /// </summary>
 public class BaseCharacterData : ScriptableObject
 {
-    [Header("名前")]
-    [SerializeField] string _characterName;
+    [field: Header("基本情報")]
+    [field: SerializeField] public string CharacterName { get; private set; } = "Default";
 
-    [Header("最大HP")]
-    [SerializeField] private int _maxHP;
+    [field: Header("ステータス")]
+    [field: SerializeField] public int MaxHP { get; private set; } = 10;
+    [field: SerializeField] public float InvincibleTime { get; private set; } = 0.15f;
+    [field: SerializeField] public float BlinkingSpeed { get; private set; } = 0.05f;
+    [field: SerializeField] public int BaseAttackPower { get; private set; } = 1;
 
-    [Header("無敵時間")]
-    [SerializeField] private float _invincibleTime;
-
-    [Header("点滅速度")]
-    [SerializeField] private float _blinkingSpeed;
-
-    [Header("基礎攻撃力")]
-    [SerializeField] private int _baseAttackPower;
-
-    [Header("1キャラがもつ攻撃パターンたち")]
-    [SerializeField] private List<AttackData> _attackPatterns = new List<AttackData>();
-
-    //プロパティ(外部から読み取る用)
-    public string CharacterName => _characterName;
-    public int MaxHP => _maxHP;
-    public float InvincibleTime => _invincibleTime;
-    public float BlinkingSpeed => _blinkingSpeed;
-    public int BaseAttackPower => _baseAttackPower;
-    public List<AttackData> AttackPatterns => _attackPatterns;
+    [field: Header("攻撃パターン")]
+    [field: SerializeField] public List<AttackData> AttackPatterns { get; private set; } = new List<AttackData>();
 }
-

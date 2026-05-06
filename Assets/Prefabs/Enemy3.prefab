@@ -429,8 +429,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2622555778042105239}
-  - component: {fileID: 8377157309029825681}
-  - component: {fileID: 4982690230145174248}
+  - component: {fileID: 9034819687452573542}
+  - component: {fileID: 6413039162978316214}
+  - component: {fileID: 7418999897973533096}
   - component: {fileID: 4256874519635568535}
   - component: {fileID: -8971843124456479845}
   - component: {fileID: 8765296986174664066}
@@ -463,7 +464,37 @@ Transform:
   - {fileID: 224751075480623965}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8377157309029825681
+--- !u!114 &9034819687452573542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8573663825391406416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c690e07f1637f84fbe81672fe755991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterHitboxController
+  _baseData: {fileID: 11400000, guid: 46ca31335d0b4f94db6ceb332d5f545a, type: 2}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _IsAttacking: 0
+--- !u!114 &6413039162978316214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8573663825391406416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e304bc8d304385742a1723ea31b8aeb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyCore
+  _enemyData: {fileID: 11400000, guid: 46ca31335d0b4f94db6ceb332d5f545a, type: 2}
+--- !u!114 &7418999897973533096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -476,31 +507,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack_Dash
   _animator: {fileID: 18836659529071028}
-  _attackIntervalTime: 2
-  _attackDistance: 3
-  _hitboxActiveDuration: 0.5
-  _attackSignTime: 1
   _attackSign: {fileID: 1056811795479543635}
   _IsAttackSigning: 0
   _IsAttacking: 0
   _dashSpeed: 15
---- !u!114 &4982690230145174248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8573663825391406416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bdef1e94173c564db7227ad39ddbb12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackObject
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _attackProfile: {fileID: 11400000, guid: 2a4c7374b60843248b45a02bf2095f78, type: 2}
-  _IsAttacking: 0
 --- !u!114 &4256874519635568535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,25 +523,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e34f47e9617a654986f12a6f765e2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  _basePatrolSpeed: 3
-  _baseChaseSpeed: 6
-  _chaseSpeedMinMultiplier: 0.75
-  _chaseSpeedMaxMultiplier: 1.25
-  _patrolSpeedMinMultiplier: 0.9
-  _patrolSpeedMaxMultiplier: 1.1
-  _detectDistance: 5
-  _minDistance: 0.5
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
   _wallCheckerRayLength: 1
   _cliffCheckerRayLength: 1.2
+  _cliffCheckerRayOffset: 0.5
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
   _currentTarget: {fileID: 0}
   _TargetObject: {fileID: 0}
-  _IsFacingRightNet:
+  _IsFacingRight:
     _value: 0
 --- !u!114 &-8971843124456479845
 MonoBehaviour:
@@ -545,9 +548,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886b33fec0edb824ca94ed296d15f1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHP
-  _maxHP: 15
-  _invincibleTime: 0.1
-  _blinkingSpeed: 10
   _hpBar: {fileID: 9164267357442308730}
   _effectPrefab: {fileID: 7392557060659208825, guid: cb2b44917ea26ab4db290f3e4fb042f6, type: 3}
 --- !u!212 &8765296986174664066
@@ -713,8 +713,9 @@ MonoBehaviour:
   Flags: 131073
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 8377157309029825681}
-  - {fileID: 4982690230145174248}
+  - {fileID: 9034819687452573542}
+  - {fileID: 6413039162978316214}
+  - {fileID: 7418999897973533096}
   - {fileID: 4256874519635568535}
   - {fileID: -8971843124456479845}
   - {fileID: 4354856166451616340}
