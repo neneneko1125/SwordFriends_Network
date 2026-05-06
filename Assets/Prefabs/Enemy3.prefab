@@ -430,6 +430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2622555778042105239}
   - component: {fileID: 9034819687452573542}
+  - component: {fileID: 3207945210226291217}
   - component: {fileID: 6413039162978316214}
   - component: {fileID: 4256874519635568535}
   - component: {fileID: -8971843124456479845}
@@ -479,6 +480,22 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  _IsAttacking: 0
+--- !u!114 &3207945210226291217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8573663825391406416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d34fd05da7741b4ba7333350454290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHandler_Dash
+  _animator: {fileID: 18836659529071028}
+  _attackSign: {fileID: 1056811795479543635}
+  _IsAttackSigning: 0
   _IsAttacking: 0
 --- !u!114 &6413039162978316214
 MonoBehaviour:
@@ -696,6 +713,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 9034819687452573542}
+  - {fileID: 3207945210226291217}
   - {fileID: 6413039162978316214}
   - {fileID: 4256874519635568535}
   - {fileID: -8971843124456479845}
