@@ -533,7 +533,7 @@ MonoBehaviour:
     m_Bits: 128
   _currentTarget: {fileID: 0}
   _TargetObject: {fileID: 0}
-  _IsFacingRightNet:
+  _IsFacingRight:
     _value: 0
 --- !u!114 &-8971843124456479845
 MonoBehaviour:
