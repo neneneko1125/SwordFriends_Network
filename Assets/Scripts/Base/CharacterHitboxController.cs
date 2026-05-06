@@ -19,7 +19,8 @@ public class CharacterHitboxController : NetworkBehaviour
 
     [Networked] public bool IsAttacking { get; set; }
 
-    private List<Collider2D> _hitResults = new List<Collider2D>();      // 当たった対象を保存するリスト
+    //private List<Collider2D> _hitResults = new List<Collider2D>();
+    private List<LagCompensatedHit> _hitResults = new List<LagCompensatedHit>();    // 当たった対象を保存するリスト
     private HashSet<Collider2D> _colliderHashSet = new HashSet<Collider2D>();   //一度の攻撃で同じ対象に当たらないようにするためのHashSet
 
     public override void Spawned()
@@ -68,18 +69,29 @@ public class CharacterHitboxController : NetworkBehaviour
         Vector2 spawnPos = (Vector2)transform.position + new Vector2(_currentAttackData.HitboxOffset.x * dir, _currentAttackData.HitboxOffset.y);
 
         // FhotonならPhysics2DじゃなくてRunner.GetPhysicsScene2D()を使う
-        int hitCount = Runner.GetPhysicsScene2D().OverlapBox(spawnPos, _currentAttackData.HitboxSize, 0, _attackFilter, _hitResults);
+        //int hitCount = Runner.GetPhysicsScene2D().OverlapBox(spawnPos, _currentAttackData.HitboxSize, 0, _attackFilter, _hitResults);
 
-        for(int i = 0; i < hitCount; i++)
+        int hitCount = Runner.LagCompensation.OverlapBox(
+            spawnPos,
+            _currentAttackData.HitboxSize,
+            Quaternion.identity,
+            Object.InputAuthority,       // 誰の入力タイミングに巻き戻すか
+            _hitResults,
+            _targetLayer,
+            HitOptions.IncludePhysX      // Unityの通常のColliderも対象に含める
+        );
+
+        for (int i = 0; i < hitCount; i++)
         {
-            var col = _hitResults[i];
+            var hit = _hitResults[i];
+            var col = hit.GameObject.GetComponent<Collider2D>();
 
-            if (!_colliderHashSet.Contains(col))    // 2回攻撃が当たらないように
+            if (col != null && !_colliderHashSet.Contains(col))
             {
                 _colliderHashSet.Add(col);
 
                 int finalDamage = Mathf.RoundToInt(_baseAttackPower * _currentAttackData.AttackPowerMultiplier);
-                if(col.TryGetComponent<BaseHP>(out var hp))
+                if (col.TryGetComponent<BaseHP>(out var hp))
                 {
                     hp.Rpc_TakeDamage(finalDamage);
                 }

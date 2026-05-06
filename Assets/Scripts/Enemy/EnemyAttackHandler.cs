@@ -27,6 +27,7 @@ public class EnemyAttackHandler : NetworkBehaviour
     protected CharacterHitboxController _hitboxController;
 
     protected EnemyInstanceData _instance;
+    protected AttackData _attackData;
 
     public override void Spawned()
     {
@@ -37,6 +38,7 @@ public class EnemyAttackHandler : NetworkBehaviour
     public void Setup(EnemyInstanceData instance)
     {
         _instance = instance;
+        _attackData = _instance.BaseData.AttackPatterns[0];
     }
 
     public override void Render()
