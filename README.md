@@ -10,6 +10,6 @@
 使用言語：C#  
 プレイ方法：未完成ですが、限定公開でUnityroomに載せています。　(PC&スマホ対応)SwordFriend - LvUp https://unityroom.com/games/lvup20260108
 
-ソースコードはAssets→MainFolder→Scripts～に収納されています。
+ソースコードはAssets→Scripts～に収納されています。
 
 また、YouTubeにて、ゲーム開発の支援活動も行っております。www.youtube.com/@レベルアップ_Unity
