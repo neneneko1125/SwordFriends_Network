@@ -9,7 +9,7 @@
 バージョン：6000.3.10f1  
 使用言語：C#  
 Unityに加えて使用したフレームワーク：Photon2　（オンライン機能）   
-プレイ方法：未完成ですが、限定公開でUnityroomに載せています。　PhotonTest - LvUp https://unityroom.com/games/networkgame2492493u4
+プレイ方法：未完成ですが、限定公開でUnityroomに載せています。　PhotonTest - LvUp https://unityroom.com/games/networkgame2492493u4  
 ソースコードはAssets→Scripts～に収納されています。
 
 また、YouTubeにて、ゲーム開発の支援活動も行っております。www.youtube.com/@レベルアップ_Unity
